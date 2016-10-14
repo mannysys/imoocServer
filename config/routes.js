@@ -10,7 +10,7 @@ module.exports = function(){
         prefix: '/api/1'   //定义路由的前缀
     })
     // user控制器
-    router.get('/u/signup', User.signup)  //验证用户登录
+    router.post('/u/signup', User.signup)  //验证用户登录
     router.post('/u/verify', User.verify)  //验证手机验证码
     router.post('/u/update', User.update)  //更新用户资料
 

@@ -10,6 +10,10 @@ var UserSchema = new mongoose.Schema({
     },
     areaCode: String,    //手机区号
     verifyCode: String,  //验证码
+    verified: {        //验证码验证过标识
+      type: Boolean,
+      default: false
+    },
     accessToken: String, //判定用户合法性，是否注册和登录过
     nickname: String,
     gender: String,
