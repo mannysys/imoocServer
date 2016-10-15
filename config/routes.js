@@ -10,12 +10,12 @@ module.exports = function(){
         prefix: '/api/1'   //定义路由的前缀
     })
     // user控制器
-    router.post('/u/signup', User.signup)  //验证用户登录
-    router.post('/u/verify', User.verify)  //验证手机验证码
-    router.post('/u/update', User.update)  //更新用户资料
+    router.post('/u/signup', App.hasBody, User.signup)  //验证用户登录
+    router.post('/u/verify', App.hasBody, User.verify)  //验证手机验证码
+    router.post('/u/update', App.hasBody, App.hasToken, User.update)  //更新用户资料
 
     // app控制器
-    router.post('/signature', App.signature)  //获取用户加密的签名
+    router.post('/signature', App.hasBody, App.hasToken, App.signature)  //获取用户加密的签名
 
     return router
 }

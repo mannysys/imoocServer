@@ -6,7 +6,7 @@ var uuid = require('uuid')
 var sms = require('../service/sms')
 
 exports.signup = function *(next){
-    var phoneNumber = this.request.body.phoneNumber
+    var phoneNumber = xss(this.request.body.phoneNumber.trim())
     /**
      * 查询接收的手机号码，在数据库中是否存在，如果没有该手机号
      * 先对手机号xss过滤然后存储到数据库中
@@ -45,6 +45,7 @@ exports.signup = function *(next){
       sms.send(user.phoneNumber, msg)
     }catch(e){
       console.log(e)
+
       this.body = {
         success: false,
         err: '短信服务异常'
@@ -55,6 +56,7 @@ exports.signup = function *(next){
     this.body = {
       success: true
     }
+    
 }
 
 //验证用户验证码
@@ -62,6 +64,7 @@ exports.verify = function *(next){
   //接收用户提交验证码和电话号码
   var verifyCode = this.request.body.verifyCode
   var phoneNumber = this.request.body.phoneNumber
+
   if(!verifyCode || !phoneNumber){
     this.body = {
       success: false,
@@ -75,9 +78,11 @@ exports.verify = function *(next){
     phoneNumber: phoneNumber,
     verifyCode: verifyCode
   }).exec() //调用exec方法
+
   if(user){
     user.verified = true  //表示用户的验证码验证过了
     user = yield user.save() //保存数据
+
     //返回给客户端数据
     this.body = {
       success: true,
@@ -95,34 +100,20 @@ exports.verify = function *(next){
     }
   }
 
-  this.body = {
-    success: true
-  }
-    
+  
 }
 
 //更新用户资料
 exports.update = function *(next){
   var body = this.request.body
-  var accessToken = body.accessToken
-  //根据accessToken找到用户
-  var user = yield User.findOne({
-    accessToken: accessToken
-  }).exec()
+  var user = this.session.user
 
-  if(!user){
-    this.body = {
-      success: false,
-      err: '用户不见了'
-    }
-    return next
-  }
   //转换成数组
   var fields = 'avatar,gender,age,nickname,breed'.split(',')
   fields.forEach(function(field){
     //如果接收到body里含有更新的字段的话，就将新字段值赋值给user对象
     if(body[field]){
-      user[field] = body[field]
+      user[field] = xss(body[field].trim())  //使用xss过滤非法字符，去掉前后空格
     }
   })
   user = yield user.save()
