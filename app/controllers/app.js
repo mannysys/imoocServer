@@ -1,12 +1,36 @@
 'use strict'
 var mongoose = require('mongoose')
+var uuid = require('uuid')
 var User = mongoose.model('User')
+var robot = require('../service/robot') //上传资源到七牛
 
-
+/**
+ * 服务端支持2种图片上传图床（七牛和cloudinary）
+ * post请求过来，我们接收type和timestamp值，
+ * 然后进行配置，返回给客户端加密的签名值
+ */
 exports.signature = function *(next){
-    this.body = {
-        success: true
+	var body = this.request.body
+    var cloud = body.cloud
+	var token
+    var key
+
+    //如果传过来的是qiniu，就是上传到七牛的请求，生成七牛的签名算法
+    if(cloud === 'qiniu'){
+        key = uuid.v4() + '.jpeg'
+        token = robot.getQiniuToken(key)
+    }else{
+        token = robot.getCloudinaryToken(body) //请求是cloud，就是生成该签名算法
     }
+    this.body = {
+        success: true,
+        data: {
+            token: token,
+            key: key
+        }
+    }
+
+
 }
 
 /**

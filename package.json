@@ -17,6 +17,7 @@
     "koa-session": "^3.3.1",
     "lodash": "^4.16.3",
     "mongoose": "^4.6.2",
+    "qiniu": "^6.1.13",
     "sha1": "^1.1.1",
     "speakeasy": "^2.0.0",
     "uuid": "^2.0.3",

@@ -7,7 +7,7 @@ var App = require('../app/controllers/app')
 module.exports = function(){
     //实例化路由
     var router = new Router({
-        prefix: '/api/1'   //定义路由的前缀
+        prefix: '/api'   //定义路由的前缀
     })
     // user控制器
     router.post('/u/signup', App.hasBody, User.signup)  //验证用户登录
