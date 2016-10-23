@@ -17,9 +17,11 @@ exports.signature = function *(next){
 
     //如果传过来的是qiniu，就是上传到七牛的请求，生成七牛的签名算法
     if(cloud === 'qiniu'){
-        key = uuid.v4() + '.jpeg'
-        token = robot.getQiniuToken(key)
-    }else{
+        var data = robot.getQiniuToken(body)
+        token = data.token
+        key = data.key
+    }
+    else{
         token = robot.getCloudinaryToken(body) //请求是cloud，就是生成该签名算法
     }
     this.body = {
