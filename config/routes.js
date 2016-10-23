@@ -3,6 +3,7 @@
 var Router = require('koa-router')
 var User = require('../app/controllers/user')
 var App = require('../app/controllers/app')
+var Creation = require('../app/controllers/creation')
 
 module.exports = function(){
     //实例化路由
@@ -16,6 +17,7 @@ module.exports = function(){
 
     // app控制器
     router.post('/signature', App.hasBody, App.hasToken, App.signature)  //获取用户加密的签名
+    router.post('/creations/video', App.hasBody, App.hasToken, Creation.video) 
 
     return router
 }

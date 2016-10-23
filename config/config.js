@@ -3,12 +3,13 @@
  * 参数配置
  */
 module.exports = {
-
+    
     qiniu: {
+        video: 'of4rf89l2.bkt.clouddn.com', //上传到七牛云存储视频的url地址
         AK: 'U-BRnY1MoXvJ4m4NX0_hrEoHKkAQSS7OIuHKGerm',
         SK: 'HkxTPHJ7y8dC2f3be8M4dDRSBT78GWquVdkfRrL5'
     },
-    //图床参数值
+    // 云存储cloudinary上传的数据的参数值
     cloudinary: {
         cloud_name: 'dk7g9s6hq',
         api_key: '273449438826248',

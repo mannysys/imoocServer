@@ -1,6 +1,8 @@
 'use strict'
 
 var qiniu = require('qiniu')
+var cloudinary = require('cloudinary')
+var Promise = require('bluebird')
 var sha1 = require('sha1')
 var uuid = require('uuid')
 var config = require('../../config/config')
@@ -9,6 +11,8 @@ var config = require('../../config/config')
 qiniu.conf.ACCESS_KEY = config.qiniu.AK
 qiniu.conf.SECRET_KEY = config.qiniu.SK
 
+//配置cloudinary上传参数值
+cloudinary.config(config.cloudinary)
 
 // 接收客户端key，生成签名算法，返回七牛签名算法
 exports.getQiniuToken = function(body) {
@@ -42,6 +46,24 @@ exports.getQiniuToken = function(body) {
 		key: key,
 		token: token
 	}
+
+}
+
+//将七牛返回的视频上传到cloudinary云存储上，进行静音视频和录音音频的合并
+exports.uploadToCloudinary = function(url){
+
+	return new Promise(function(resolve, reject){
+		cloudinary.uploader.upload(url, function(result){
+			if(result && result.public_id){
+				resolve(result)
+			}else{
+				reject(result)
+			}
+		}, {
+			resource_type: 'video',
+			folder: 'video'  //指定上传到哪个文件夹下
+		})
+	})
 
 }
 
