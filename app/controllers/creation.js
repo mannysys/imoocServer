@@ -1,6 +1,6 @@
 'use strict'
 var mongoose = require('mongoose')
-var Video = mongoose.model('video')
+var Video = mongoose.model('Video')
 var robot = require('../service/robot') //上传资源到七牛
 var config = require('../../config/config')
 
