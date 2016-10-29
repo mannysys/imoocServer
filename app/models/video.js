@@ -36,7 +36,7 @@ var VideoSchema = new Schema({
 })
 
 //在存储前，可以加个回调函数处理
-UserSchema.pre('save', function(next){
+VideoSchema.pre('save', function(next){
   if(this.isNew){ //如果是老的数据，进行更新下时间
     this.meta.createAt = this.meta.updateAt = Date.now()
   }else{
