@@ -5,7 +5,7 @@
 module.exports = {
     
     qiniu: {
-        video: 'of4rf89l2.bkt.clouddn.com', //上传到七牛云存储视频的url地址
+        video: 'ofuein66v.bkt.clouddn.com', //上传到七牛云存储视频的url地址
         AK: 'U-BRnY1MoXvJ4m4NX0_hrEoHKkAQSS7OIuHKGerm',
         SK: 'HkxTPHJ7y8dC2f3be8M4dDRSBT78GWquVdkfRrL5'
     },
