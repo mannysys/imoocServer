@@ -44,6 +44,9 @@ exports.video = function *(next){
                 video.save()
             }
         })
+        .catch((err) => {
+            console.log(err)
+        })
 
     this.body = {
         success: true,

@@ -12,24 +12,18 @@ var robot = require('../service/robot') //上传资源到七牛
 exports.signature = function *(next){
 	var body = this.request.body
     var cloud = body.cloud
-	var token
-    var key
+    var data 
 
     //如果传过来的是qiniu，就是上传到七牛的请求，生成七牛的签名算法
     if(cloud === 'qiniu'){
-        var data = robot.getQiniuToken(body)
-        token = data.token
-        key = data.key
+        data = robot.getQiniuToken(body)
     }
     else{
-        token = robot.getCloudinaryToken(body) //请求是cloud，就是生成该签名算法
+        data = robot.getCloudinaryToken(body) //请求是cloud，就是生成该签名算法
     }
     this.body = {
         success: true,
-        data: {
-            token: token,
-            key: key
-        }
+        data: data
     }
 
 
