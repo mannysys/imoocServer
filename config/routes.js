@@ -17,7 +17,12 @@ module.exports = function(){
 
     // app控制器
     router.post('/signature', App.hasBody, App.hasToken, App.signature)  //获取用户加密的签名
+    
+    // creations
+    router.post('/creations', App.hasBody, App.hasToken, Creation.save) 
     router.post('/creations/video', App.hasBody, App.hasToken, Creation.video) 
+    router.post('/creations/audio', App.hasBody, App.hasToken, Creation.audio) 
 
     return router
+    
 }

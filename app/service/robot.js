@@ -49,6 +49,26 @@ exports.getQiniuToken = function(body) {
 
 }
 
+//将从cloudinary返回合并视频和图片同步上传到七牛
+exports.saveToQiniu = function(url, key){
+	var client = new qiniu.rs.Client()  //使用七牛sdk
+	
+	return new Promise(function(resolve, reject){
+		client.fetch(url, 'gougouvideo', key, function(err, ret){
+			if(!err){
+				resolve(ret)
+			}
+			else{
+				reject(err)
+			}
+		})
+
+	})
+
+
+}
+
+
 //将七牛返回的视频上传到cloudinary云存储上，进行静音视频和录音音频的合并
 exports.uploadToCloudinary = function(url){
 
