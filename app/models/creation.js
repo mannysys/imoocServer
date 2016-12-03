@@ -35,6 +35,11 @@ var CreationSchema = new Schema({
         default: 0
     },
 
+    votes: [String], //点赞，存储的是每个用户id
+    up: { //点赞数量
+      type: Number,
+      default: 0
+    },
     meta: {
       createAt: { //创建时间
         type: Date,

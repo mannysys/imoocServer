@@ -4,6 +4,7 @@ var Router = require('koa-router')
 var User = require('../app/controllers/user')
 var App = require('../app/controllers/app')
 var Creation = require('../app/controllers/creation')
+var Comment = require('../app/controllers/comment')
 
 module.exports = function(){
     //实例化路由
@@ -23,6 +24,13 @@ module.exports = function(){
     router.post('/creations', App.hasBody, App.hasToken, Creation.save) 
     router.post('/creations/video', App.hasBody, App.hasToken, Creation.video) 
     router.post('/creations/audio', App.hasBody, App.hasToken, Creation.audio) 
+
+    // comments  get是获取评论列表 post是评论存储
+    router.get('/comments', App.hasToken, Comment.find) 
+    router.post('/comments', App.hasBody, App.hasToken, Comment.save) 
+
+    //点赞 votes
+    router.post('/up', App.hasBody, App.hasToken, Creation.up) 
 
     return router
     

@@ -1,4 +1,6 @@
 'use strict'
+
+var _ = require('lodash')
 var mongoose = require('mongoose')
 var Promise = require('bluebird')
 var Video = mongoose.model('Video')
@@ -8,6 +10,42 @@ var xss = require('xss')
 var robot = require('../service/robot') //上传资源到七牛
 var config = require('../../config/config')
 
+
+//用户给视频点赞
+exports.up = function *(next){
+    var body = this.request.body
+    var user = this.session.user
+    var creation = yield Creation.findOne({
+        _id: body.id
+    })
+    .exec()
+    //检查视频是否存在
+    if(!creation){
+        this.body = {
+            success: false,
+            err: '视频找不到了！'
+        }
+        return next
+    }
+    
+    if(body.up === 'yes'){
+        //将用户id增加进去
+        creation.votes.push(String(user._id))
+    }
+    else{
+        //如果是no的话，就将该用户id 踢出去 删除掉
+        creation.votes = _.without(creation.votes, String(user._id))
+    }
+    //投票点赞的用户数量
+    creation.up = creation.votes.length
+
+    yield creation.save()
+
+    this.body = {
+        success: true
+    }
+
+}
 
 var userFields = [
     'avatar',
